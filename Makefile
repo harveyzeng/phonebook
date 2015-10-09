@@ -1,6 +1,6 @@
 CC ?= gcc
 CFLAGS_common_orig ?= -O0 -Wall -std=gnu99
-CFLAGS_common ?= -O0 -Wall -std=gnu99
+CFLAGS_common ?= -O3 -Wall -std=gnu99
 EXEC = phonebook_orig phonebook_opt
 all: $(EXEC)
 
