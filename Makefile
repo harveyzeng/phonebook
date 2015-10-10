@@ -1,7 +1,7 @@
 CC ?= gcc
 CFLAGS_common_orig ?= -O0 -Wall -std=gnu99
-CFLAGS_common ?= -O0 -Wall -std=gnu99
-EXEC = phonebook_orig phonebook_opt
+CFLAGS_common ?= -O3 -Wall -std=gnu99 -pipe
+EXEC = phonebook_orig phonebook_opt 
 all: $(EXEC)
 
 SRCS_common = main.c
@@ -15,7 +15,10 @@ phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 		$(SRCS_common) $@.c
 
 run: $(EXEC)
-	watch -d -t ./phonebook_orig
+	echo "echo 1 > /proc/sys/vm/drop_caches" | sudo sh
+	perf stat  -e cache-misses,cache-references,instructions,cycles,branches,branch-misses ./phonebook_orig
+	echo "echo 1 > /proc/sys/vm/drop_caches" | sudo sh
+	perf stat  -e cache-misses,cache-references,instructions,cycles,branches,branch-misses ./phonebook_opt
 
 clean:
 	$(RM) $(EXEC) *.o perf.*
